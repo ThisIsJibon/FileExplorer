@@ -21,7 +21,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-                  <MenuItem mnemonicParsing="false" text="Explore" />
+                  <MenuItem fx:id="exploreMenuItem" mnemonicParsing="false" text="Explore" />
               <MenuItem mnemonicParsing="false" text="Copy" />
                   <MenuItem mnemonicParsing="false" text="Move" />
                   <MenuItem mnemonicParsing="false" text="Rename" />
@@ -43,13 +43,13 @@
          <children>
             <VBox maxWidth="Infinity" style="-fx-background-color: #753a36;" HBox.hgrow="ALWAYS">
                <children>
-                  <TextField text="abc" />
-                  <ListView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                  <TextField fx:id="leftDirectory" text="Directory" />
+                  <ListView fx:id="leftListView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                </children></VBox>
             <VBox maxWidth="Infinity" style="-fx-background-color: #f9ca24;" HBox.hgrow="ALWAYS">
                <children>
-                  <TextField />
-                  <ListView prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                  <TextField fx:id="rightDirectory" promptText="Directory" />
+                  <ListView fx:id="rightListView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                </children></VBox>
          </children>
       </HBox>
