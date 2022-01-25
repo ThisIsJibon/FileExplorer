@@ -62,22 +62,31 @@ public class HomeController extends Application implements Initializable {
         leftListView.setOnMouseClicked(m -> {
             String temp =leftDirectory.getText().toString();
             String separator = "\\";
+
             if(temp.endsWith("\\")) separator="";
             if (m.getButton().equals(MouseButton.PRIMARY) && m.getClickCount() == 2){
-                leftDirectory.setText( temp+separator+ leftListView.getSelectionModel().getSelectedItem().toString());
-                exploreDirectory(leftDirectory.getText(),leftChildrenList);
+                File curFile = new File(temp+"\\"+leftListView.getSelectionModel().getSelectedItem().toString());
+                if(curFile.isDirectory()){
+                    leftDirectory.setText( temp+separator+ leftListView.getSelectionModel().getSelectedItem().toString());
+                    exploreDirectory(leftDirectory.getText(),leftChildrenList);
+                } else openFile(curFile);
             }
-
         });
         rightListView.setOnMouseClicked(m -> {
             String temp =rightDirectory.getText().toString();
             String separator = "\\";
+
             if(temp.endsWith("\\")) separator="";
             if (m.getButton().equals(MouseButton.PRIMARY) && m.getClickCount() == 2){
-                rightDirectory.setText( temp+separator+ rightListView.getSelectionModel().getSelectedItem().toString());
-                exploreDirectory(rightDirectory.getText(),rightChildrenList);
+                File curFile = new File(temp+"\\"+rightListView.getSelectionModel().getSelectedItem().toString());
+                if(curFile.isDirectory()) {
+                    rightDirectory.setText(temp + separator + rightListView.getSelectionModel().getSelectedItem().toString());
+                    exploreDirectory(rightDirectory.getText(),rightChildrenList);
+                } else openFile(curFile);
             }
         });
+
+
         rightDirectory.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent ke) {
@@ -86,6 +95,7 @@ public class HomeController extends Application implements Initializable {
                 }
             }
         });
+
         leftDirectory.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent ke) {
@@ -94,24 +104,117 @@ public class HomeController extends Application implements Initializable {
                 }
             }
         });
+
         exploreMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-            String temp =leftDirectory.getText().toString();
-            String separator = "\\";
 
             @Override
             public void handle(ActionEvent event) {
+
                 if(leftListView.isFocused()){
-                    temp =leftDirectory.getText().toString();
-                    separator = "\\";
+
+                    String temp =leftDirectory.getText().toString();
+                    String separator = "\\";
+                    File curFile = new File(temp+"\\"+leftListView.getSelectionModel().getSelectedItem().toString());
                     if(temp.endsWith("\\")) separator="";
-                    leftDirectory.setText( temp+separator+ leftListView.getSelectionModel().getSelectedItem().toString());
-                    exploreDirectory(leftDirectory.getText(),leftChildrenList);
-                } else if(rightListView.isFocused()){
-                    temp = rightDirectory.getText().toString();
-                    separator = "\\";
+
+                    if(curFile.isDirectory()){
+                        leftDirectory.setText( temp+separator+ leftListView.getSelectionModel().getSelectedItem().toString());
+                        exploreDirectory(leftDirectory.getText(),leftChildrenList);
+                    } else openFile(curFile);
+
+                }
+
+                else if(rightListView.isFocused()){
+
+                    String temp =rightDirectory.getText().toString();
+                    String separator = "\\";
+                    File curFile = new File(temp+"\\"+rightListView.getSelectionModel().getSelectedItem().toString());
                     if(temp.endsWith("\\")) separator="";
-                    rightDirectory.setText( temp+separator+ rightListView.getSelectionModel().getSelectedItem().toString());
-                    exploreDirectory(rightDirectory.getText(),rightChildrenList);
+
+                    if(curFile.isDirectory()) {
+                        rightDirectory.setText(temp + separator + rightListView.getSelectionModel().getSelectedItem().toString());
+                        exploreDirectory(rightDirectory.getText(),rightChildrenList);
+                    } else openFile(curFile);
+
+                }
+            }
+        });
+
+        leftListView.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    exploreDirectory(leftDirectory.getText().toString(),leftChildrenList);
+                }
+                else if (event.getCode().equals(KeyCode.BACK_SPACE)) {
+                    int lastIndex = leftDirectory.getText().toString().lastIndexOf("\\");
+                    if(lastIndex!=-1){
+                        String previousDirectory = leftDirectory.getText().toString().substring(0,lastIndex);
+                        exploreDirectory(previousDirectory,leftChildrenList);
+                        leftDirectory.setText(previousDirectory);
+                    }
+                }
+            }
+        });
+
+        rightListView.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode().equals(KeyCode.ENTER) && !rightListView.getSelectionModel().isEmpty()) {
+                    String separator = "\\";
+                    if(rightDirectory.getText().toString().endsWith("\\")) separator = "";
+                    String newDirectory = rightDirectory.getText().toString()+separator+rightListView.getSelectionModel().getSelectedItem().toString();
+                    exploreDirectory(newDirectory,rightChildrenList);
+
+                    if(new File(newDirectory).isDirectory())
+                        rightDirectory.setText(newDirectory);
+
+                    else
+                        openFile(new File(newDirectory));
+
+                }
+                else if (event.getCode().equals(KeyCode.BACK_SPACE)) {
+                    int lastIndex = rightDirectory.getText().toString().lastIndexOf("\\");
+                    if(lastIndex!=-1){
+                        String previousDirectory = rightDirectory.getText().toString().substring(0,lastIndex);
+                        String rDir = previousDirectory;
+                        if(rDir.endsWith(":")) rDir+="\\";
+                        rightDirectory.setText(rDir);
+                        previousDirectory=rDir;
+                        exploreDirectory(previousDirectory,rightChildrenList);
+                        rightDirectory.setText(previousDirectory);
+                    }
+                }
+            }
+        });
+
+        leftListView.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode().equals(KeyCode.ENTER) && !leftListView.getSelectionModel().isEmpty()) {
+                    String separator = "\\";
+                    if(leftDirectory.getText().toString().endsWith("\\")) separator = "";
+                    String newDirectory = leftDirectory.getText().toString()+separator+leftListView.getSelectionModel().getSelectedItem().toString();
+                    exploreDirectory(newDirectory,leftChildrenList);
+
+                    if(new File(newDirectory).isDirectory())
+                        leftDirectory.setText(newDirectory);
+
+                    else
+                        openFile(new File(newDirectory));
+
+                }
+                else if (event.getCode().equals(KeyCode.BACK_SPACE)) {
+                    int lastIndex = leftDirectory.getText().toString().lastIndexOf("\\");
+                    if(lastIndex!=-1){
+                        String previousDirectory = leftDirectory.getText().toString().substring(0,lastIndex);
+                        String rDir = previousDirectory;
+                        if(rDir.endsWith(":")) rDir+="\\";
+                        leftDirectory.setText(rDir);
+                        previousDirectory=rDir;
+                        exploreDirectory(previousDirectory,leftChildrenList);
+                        leftDirectory.setText(previousDirectory);
+                    }
                 }
             }
         });
@@ -153,6 +256,22 @@ public class HomeController extends Application implements Initializable {
                 curChildList.addAll(list);
             } else {
                 curChildList.clear();
+            }
+        } else if(repo.isFile()){
+
+            openFile(repo);
+        }
+    }
+    private void openFile(File file) {
+        if (!file.exists()) {
+            return;
+        }
+        if (file.isDirectory()) {
+            mDirectory = file;
+        } else if (file.isFile()) {
+            try {
+                Desktop.getDesktop().open(file);
+            } catch (Exception e) {
             }
         }
     }
