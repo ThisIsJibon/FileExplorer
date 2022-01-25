@@ -42,6 +42,15 @@ public class HomeController extends Application implements Initializable {
     public ListView leftListView;
     public ListView rightListView;
     public MenuItem exploreMenuItem;
+    public MenuItem newDirectoryMenuItem;
+    public MenuItem newFileMenuItem;
+    public MenuItem copyMenuItem;
+    public MenuItem moveMenuItem;
+    public MenuItem renameMenuItem;
+    public MenuItem deleteMenuItem;
+    public MenuItem detailsMenuItem;
+    public MenuItem aboutMenuItem;
+    public MenuItem sourceMenuItem;
 
     //other declarations
     private File mDirectory;
@@ -140,23 +149,6 @@ public class HomeController extends Application implements Initializable {
             }
         });
 
-        leftListView.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode().equals(KeyCode.ENTER)) {
-                    exploreDirectory(leftDirectory.getText().toString(),leftChildrenList);
-                }
-                else if (event.getCode().equals(KeyCode.BACK_SPACE)) {
-                    int lastIndex = leftDirectory.getText().toString().lastIndexOf("\\");
-                    if(lastIndex!=-1){
-                        String previousDirectory = leftDirectory.getText().toString().substring(0,lastIndex);
-                        exploreDirectory(previousDirectory,leftChildrenList);
-                        leftDirectory.setText(previousDirectory);
-                    }
-                }
-            }
-        });
-
         rightListView.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -218,6 +210,18 @@ public class HomeController extends Application implements Initializable {
                 }
             }
         });
+
+        newDirectoryMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String ref = "NO_DEFINED_REF";
+                if(leftDirectory.isFocused() || leftListView.isFocused()) ref = "LEFT_REF";
+                else if(rightListView.isFocused()|| rightDirectory.isFocused()) ref = "RIGHT_REF";
+                if(!ref.equals("NO_DEFINED_REF"))
+                    FileOperations.createDirectory(ref,leftDirectory.getText().toString(),rightDirectory.getText().toString());
+            }
+        });
+
     }
 
     private void initializeDirectoryPath(){

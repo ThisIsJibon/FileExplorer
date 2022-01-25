@@ -15,24 +15,24 @@
         <menus>
           <Menu mnemonicParsing="false" text="Create">
             <items>
-              <MenuItem mnemonicParsing="false" text="New Directory" />
-                  <MenuItem mnemonicParsing="false" text="New File" />
+              <MenuItem fx:id="newDirectoryMenuItem" mnemonicParsing="false" text="New Directory" />
+                  <MenuItem fx:id="newFileMenuItem" mnemonicParsing="false" text="New File" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
                   <MenuItem fx:id="exploreMenuItem" mnemonicParsing="false" text="Explore" />
-              <MenuItem mnemonicParsing="false" text="Copy" />
-                  <MenuItem mnemonicParsing="false" text="Move" />
-                  <MenuItem mnemonicParsing="false" text="Rename" />
-                  <MenuItem mnemonicParsing="false" text="Delete" />
-                  <MenuItem mnemonicParsing="false" text="Details" />
+              <MenuItem fx:id="copyMenuItem" mnemonicParsing="false" text="Copy" />
+                  <MenuItem fx:id="moveMenuItem" mnemonicParsing="false" text="Move" />
+                  <MenuItem fx:id="renameMenuItem" mnemonicParsing="false" text="Rename" />
+                  <MenuItem fx:id="deleteMenuItem" mnemonicParsing="false" text="Delete" />
+                  <MenuItem fx:id="detailsMenuItem" mnemonicParsing="false" text="Details" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-                  <MenuItem mnemonicParsing="false" text="Source" />
+              <MenuItem fx:id="aboutMenuItem" mnemonicParsing="false" text="About" />
+                  <MenuItem fx:id="sourceMenuItem" mnemonicParsing="false" text="Source" />
             </items>
           </Menu>
         </menus>
