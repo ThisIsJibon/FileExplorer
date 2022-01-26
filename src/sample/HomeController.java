@@ -222,6 +222,33 @@ public class HomeController extends Application implements Initializable {
             }
         });
 
+        newFileMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String ref = "NO_DEFINED_REF";
+                if(leftDirectory.isFocused() || leftListView.isFocused()) ref = "LEFT_REF";
+                else if(rightListView.isFocused()|| rightDirectory.isFocused()) ref = "RIGHT_REF";
+                if(!ref.equals("NO_DEFINED_REF"))
+                    FileOperations.createFile(ref,leftDirectory.getText().toString(),rightDirectory.getText().toString());
+            }
+        });
+
+        renameMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String ref = "NO_DEFINED_REF";
+                String fileRef = "NO_DEFINED_REF";
+                if(leftListView.isFocused() ){
+                    ref = "LEFT_REF";  fileRef = leftListView.getSelectionModel().getSelectedItem().toString();
+                }
+                else if(rightListView.isFocused()){
+                    ref = "RIGHT_REF"; fileRef = rightListView.getSelectionModel().getSelectedItem().toString();
+                }
+                if(!ref.equals("NO_DEFINED_REF"))
+                    FileOperations.renameFile(ref,fileRef,leftDirectory.getText().toString(),rightDirectory.getText().toString());
+            }
+        });
+
     }
 
     private void initializeDirectoryPath(){

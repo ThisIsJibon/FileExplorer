@@ -23,7 +23,3 @@
 hs_err_pid*
 
 #idea generated files
-.idea/
-*.DS_STORE
-*.iml
-out/
